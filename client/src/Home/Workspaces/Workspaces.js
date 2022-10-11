@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Workspace from "./Workspace";
 const Workspaces = () => {
-  const [workspaces, setWorkspaces] = useState([]);
+  const [workspaces, setWorkspaces] = useState(null);
   useEffect(() => {
     fetch(`/workspaces`)
       .then((res) => res.json())
@@ -14,7 +14,8 @@ const Workspaces = () => {
 
   return (
     <>
-      {workspaces.map((workspace) => {
+      {workspaces&&
+      workspaces.map((workspace) => {
         return <Workspace workspace={workspace} />;
       })}
     </>

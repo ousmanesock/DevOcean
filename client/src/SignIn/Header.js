@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 const Header = () => {
+  let email = sessionStorage.getItem("user");
   return (
-    <Wrapper>
-      <SignInLink to="/login">Sign In</SignInLink>
-    </Wrapper>
+    <Wrapper>{email && <SignInLink to="/login">Sign In</SignInLink>}</Wrapper>
   );
 };
 

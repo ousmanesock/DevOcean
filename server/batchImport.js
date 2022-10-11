@@ -21,9 +21,7 @@ const batchImport = async () => {
       .insertMany(workspaces);
     const usersResult = await db.collection("Users").insertMany(users);
     const threadsResult = await db.collection("Threads").insertMany(threads);
-    const documentsResult = await db
-      .collection("Documents")
-      .insertMany(documents);
+    const documentsResult = await db.collection("Documents").insertMany(documents);
   } catch (error) {
     console.log(error);
   } finally {

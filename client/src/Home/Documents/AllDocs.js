@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { documents } from "../../../../server/data";
+import { documents } from "../../data";
 
 const AllDocs = () => {
   const [docs, setDocs] = useState([]);
@@ -24,4 +24,4 @@ const AllDocs = () => {
 };
 export default AllDocs;
 
-const Docs = styled.div``
+const Docs = styled.div``;

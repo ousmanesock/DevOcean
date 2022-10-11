@@ -1,8 +1,11 @@
 import * as React from "react";
 import Login from "./SignIn/Login";
 import Header from "./SignIn/Header";
-import HomeScreen from "./Home/HomeScreen"
+import HomeScreen from "./Home/HomeScreen";
+import TaskLists from "./Home/Tasks/TaskLists";
+import AllDocs from "./Home/Documents/AllDocs";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Workspaces from "./Home/Workspaces/Workspaces.js";
 
 const App = () => {
   return (
@@ -13,7 +16,7 @@ const App = () => {
         <Route path="/home" element={<HomeScreen />} />
         <Route path="/workspaces" element={<Workspaces />} />
         <Route path="/tasks" element={<TaskLists />} />
-        <Route path="/docs" element={<Docs />} />
+        <Route path="/docs" element={<AllDocs />} />
       </Routes>
     </Router>
   );

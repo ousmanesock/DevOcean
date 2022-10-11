@@ -19,7 +19,9 @@ const Login = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then(sessionStorage.setItem("user", formData.email));
     fetch("/workspaces")
       .then((res) => res)
       .then((data) => {
