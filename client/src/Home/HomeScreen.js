@@ -1,6 +1,6 @@
 import Appbar from "./Appbar";
 import Workspaces from "./Workspaces/Workspaces";
-// import TaskLists from "./Tasks/TaskLists";
+import TaskLists from "./Tasks/TaskLists";
 import styled from "styled-components";
 const HomeScreen = () => {
   return (
@@ -8,7 +8,7 @@ const HomeScreen = () => {
       <Appbar />
       <HomeSection>
         <Workspaces />
-        {/* <TaskLists /> */}
+        <TaskLists />
         <Docs />
         <Threads />
       </HomeSection>

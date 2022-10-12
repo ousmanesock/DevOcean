@@ -10,14 +10,14 @@ const Workspaces = () => {
         setWorkspaces(data.data);
       });
   }, []);
-  console.log(workspaces);
+  console.log("workspaces: " + workspaces);
 
   return (
     <>
-      {workspaces&&
-      workspaces.map((workspace) => {
-        return <Workspace workspace={workspace} />;
-      })}
+      {workspaces &&
+        workspaces.map((workspace) => {
+          return <Workspace workspace={workspace} />;
+        })}
     </>
   );
 };

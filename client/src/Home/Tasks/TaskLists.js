@@ -6,7 +6,7 @@ const TaskLists = () => {
     fetch(`/tasklists`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log("data: " + data);
         setTaskLists(data.data);
       });
   }, []);
@@ -14,9 +14,10 @@ const TaskLists = () => {
 
   return (
     <>
-      {tasklists.map((tasklist) => {
-        return <TaskList tasklist={tasklist} />;
-      })}
+      {tasklists.length &&
+        tasklists.map((tasklist) => {
+          return <TaskList tasklist={tasklist} />;
+        })}
     </>
   );
 };

@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    fetch("/workspace/addUser", {
+    fetch("/workspaces/addUser", {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {

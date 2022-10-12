@@ -1,12 +1,13 @@
 import styled from "styled-components";
+import TaskList from "../Tasks/TaskList";
 
-const Workspace = ({ workspace }) => {
+const Workspace = ({ workspaces }) => {
   return (
-    workspace && (
+    workspaces && (
       <Wrapper>
-        <div>{workspace.project_name}</div>
+        <div>{workspaces.project_name}</div>
         <Docs>
-          {workspace.document.map((doc) => {
+          {workspaces.document.map((doc) => {
             return <div>{doc}</div>;
           })}
         </Docs>
@@ -23,5 +24,4 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 const Docs = styled.div``;
-const TaskList = styled.div``;
 const Thread = styled.div``;
