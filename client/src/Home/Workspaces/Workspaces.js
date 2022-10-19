@@ -10,7 +10,7 @@ const Workspaces = () => {
         setWorkspaces(data.data);
       });
   }, []);
-  console.log("workspaces: " + workspaces);
+  console.log(workspaces);
 
   return (
     <>

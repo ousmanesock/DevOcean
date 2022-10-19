@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const TaskList = ({ tasklist }) => {
-  console.log("tasklist: " + tasklist);
+  console.log(tasklist);
   return (
     tasklist && (
       <Wrapper>

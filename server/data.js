@@ -82,28 +82,20 @@ const workspaces = [
   {
     _id: workspaceId,
     project_name: "English assignment",
-    team_members: [
-      "Amanda",
-      "Bob",
-      "Charlie",
-    ],
+    team_members: ["Amanda", "Bob", "Charlie"],
     document: [documentId],
   },
   {
     _id: workspaceId,
     project_name: "Geography assignment",
-    team_members: [
-      "Henry",
-      "Isabel",
-      "Jackie",
-    ],
+    team_members: ["Henry", "Isabel", "Jackie"],
     document: [documentId],
   },
 ];
 const threads = [
   {
     _id: uuidv4(),
-    workspaceId: workspaceId,
+    workspaceId: "634eef3f77c1adbf720898f4",
     thread: [
       { message: "Good morning", user: "Amanda" },
       { message: "Hello!", user: "Bob" },
@@ -125,26 +117,78 @@ const threads = [
 ];
 
 const tasks = [
+  // {
+  //   name: "presentation",
+  //   assigned_to: "David",
+  //   status: "Not started",
+  //   priority: "urgent",
+  // },
+  // {
+  //   name: "reports",
+  //   assigned_to: "Erika",
+  //   status: "In Progress",
+  //   priority: "high",
+  // },
+  // {
+  //   name: "dashboard",
+  //   assigned_to: "Farid",
+  //   status: "In Progress",
+  //   priority: "normal",
+  // },
+  // {
+  //   name: "vetting",
+  //   assigned_to: "Grace",
+  //   status: "Completed",
+  //   priority: "high",
+  // },
+
+  {
+    name: "agenda",
+    assigned_to: "Kevin",
+    status: "Completed",
+    priority: "normal",
+  },
+  {
+    name: "minutes",
+    assigned_to: "Laura",
+    status: "Not started",
+    priority: "normal",
+  },
+  {
+    name: "followup",
+    assigned_to: "Marc",
+    status: "In Progress",
+    priority: "urgent",
+  },
+  {
+    name: "review",
+    assigned_to: "Octav",
+    status: "Completed",
+    priority: "high",
+  },
+];
+
+const taskList = [
   {
     _id: uuidv4(),
-    workspaceId: workspaceId,
-    task: [
-      { task: "presentation", assigned_to: "David", status: "Not started" },
-      { task: "reports", assigned_to: "Erika", status: "In Progress" },
-      { task: "dashboard", assigned_to: "Farid", status: "In Progress" },
-      { task: "vetting", assigned_to: "Grace", status: "Completed" },
+    workspaceId: "634eef3f77c1adbf720898f4",
+    tasks: [
+      "634ef97cbc3247f84538403d",
+      "634ef97cbc3247f84538403e",
+      "634ef97cbc3247f84538403f",
+      "634ef97cbc3247f845384040",
     ],
   },
   {
     _id: uuidv4(),
-    workspaceId: workspaceId,
-    task: [
-      { task: "agenda", assigned_to: "Kevin", status: "Completed" },
-      { task: "minutes", assigned_to: "Laura", status: "Not started" },
-      { task: "followup", assigned_to: "Marc", status: "In Progress" },
-      { task: "review", assigned_to: "Octav", status: "Completed" },
+    workspaceId: "634eef3f77c1adbf720898f5",
+    tasks: [
+      "634efcd83ccaf9a594b27ccc",
+      "634efcd83ccaf9a594b27ccd",
+      "634efcd83ccaf9a594b27cce",
+      "634efcd83ccaf9a594b27ccf",
     ],
   },
 ];
 
-module.exports = { workspaces, documents, threads, users, tasks };
+module.exports = { workspaces, documents, threads, users, tasks, taskList };

@@ -6,7 +6,7 @@ const TaskLists = () => {
     fetch(`/tasklists`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("data: " + data);
+        console.log(data);
         setTaskLists(data.data);
       });
   }, []);
