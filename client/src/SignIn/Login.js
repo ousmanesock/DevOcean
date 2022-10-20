@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Form from "./Form";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [homeData, setHomeData] = useState(null);
 
@@ -22,12 +24,20 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then(sessionStorage.setItem("user", formData.email));
-    fetch("/workspaces")
-      .then((res) => res)
-      .then((data) => {
-        console.log(data);
-        setHomeData(data);
-      });
+  };
+
+  const handleLogin = () => {
+    fetch("/login", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(sessionStorage.setItem("user", formData.email));
+    navigate("/home");
   };
 
   return (
@@ -36,7 +46,7 @@ const Login = () => {
         <Form
           formData={formData}
           handleChange={handleChange}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleLogin}
         />
       </>
     </Wrapper>

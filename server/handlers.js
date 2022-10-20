@@ -222,6 +222,48 @@ const deleteWorkspace = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    const user = await db.collection("Users").findOne({ email: email });
+
+    if (!user)
+      return res.status(401).json({
+        msg:
+          "The email address " +
+          email +
+          " is not associated with any account. Double-check your email address and try again.",
+      });
+
+    //validate password
+    if (!user.comparePassword(password))
+      return res.status(401).json({ message: "Invalid email or password" });
+
+    // Make sure the user has been verified
+    if (!user.isVerified)
+      return res.status(401).json({
+        type: "not-verified",
+        message: "Your account has not been verified.",
+      });
+
+    // Login successful, write token, and send back user
+    // res.status(200).json({ token: user.generateJWT(), user: user });
+    // res.status(200).json({ token: user.generateJWT(), user: user });
+
+    res.status(200).json({ status: 200, message: "success", data: user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: 500, message: error.message });
+  } finally {
+    client.close();
+    console.log("Disconnected");
+  }
+};
+
 const getUser = async (req, res) => {
   const user = req.params.user;
   const client = new MongoClient(MONGO_URI, options);
@@ -697,6 +739,7 @@ const deleteDocument = async (req, res) => {
 };
 
 module.exports = {
+  login,
   addTeam,
   getWorkspace,
   getWorkspaces,
@@ -720,5 +763,5 @@ module.exports = {
   getThreads,
   addThread,
   getTeam,
-  getTeams
+  getTeams,
 };

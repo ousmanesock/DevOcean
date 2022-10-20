@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const {
   addTeam,
+  login,
   addUser,
   getUser,
   getUsers,
@@ -34,6 +35,7 @@ express()
   .get("/DevOcean", (req, res) => {
     res.status(200).json({ status: 200, message: "Welcome!" });
   })
+  .post("/login", login)
   .get("/user/:user", getUser)
   .get("/users", getUsers)
   .post("/addUser", addUser)
@@ -58,7 +60,6 @@ express()
   .get("/team/:teamId", getTeam)
   .get("/teams", getTeams)
   .post("/addTeam", addTeam)
-  
 
   .listen(8000, () => {
     console.log(`Server launched on port 8000`);

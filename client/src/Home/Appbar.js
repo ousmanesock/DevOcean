@@ -13,7 +13,14 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Workspaces", "Teams", "TaskLists", "Docs"];
+const pages = [
+  "Workspaces",
+  "TaskLists",
+  "Docs",
+  "Teams",
+  "Members",
+  "Threads",
+];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Appbar = () => {
