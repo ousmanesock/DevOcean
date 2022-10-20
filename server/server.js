@@ -2,6 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const {
+  addTeam,
   addUser,
   getUser,
   getUsers,
@@ -16,9 +17,15 @@ const {
   getDocument,
   getDocuments,
   addDocument,
+  getTasks,
+  getTask,
   addTask,
   addUserList,
+  getThread,
+  getThreads,
   addThread,
+  getTeam,
+  getTeams,
 } = require("./handlers");
 express()
   .use(helmet())
@@ -31,6 +38,8 @@ express()
   .get("/users", getUsers)
   .post("/addUser", addUser)
   .post("/addUserList", addUserList)
+  .get("/thread", getThreads)
+  .get("/thread/:threadId", getThread)
   .post("/addThread", addThread)
   .get("/workspace/:workspace", getWorkspace)
   .get("/workspaces", getWorkspaces)
@@ -43,7 +52,14 @@ express()
   .get("/document/:document", getDocument)
   .get("/documents", getDocuments)
   .post("/addDocument", addDocument)
+  .get("/tasks", getTasks)
+  .get("/task/:taskId", getTask)
   .post("/addTask", addTask)
+  .get("/team/:teamId", getTeam)
+  .get("/teams", getTeams)
+  .post("/addTeam", addTeam)
+  
+
   .listen(8000, () => {
     console.log(`Server launched on port 8000`);
   });

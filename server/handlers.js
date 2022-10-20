@@ -1,4 +1,4 @@
-const { MongoClient, objectId } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const {
   workspaces,
@@ -7,6 +7,7 @@ const {
   document,
   users,
   threads,
+  teams,
 } = require("./data");
 
 require("dotenv").config();
@@ -16,6 +17,101 @@ const { MONGO_URI } = process.env;
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+};
+
+const addTeam = async (req, res) => {
+  const newId = uuidv4();
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    for (const team of teams) {
+      const result = await db.collection("Teams").insertOne({
+        name: team.name,
+        members: team.members,
+      });
+      console.log(result);
+    }
+    console.log(workspaces);
+
+    res.status(200).json({ status: 200, message: "Team added", data: "added" });
+  } catch (error) {
+    res.status(500).json({ status: 500, message: error.message });
+    console.log(error);
+  } finally {
+    client.close();
+    console.log("Disconnected");
+  }
+};
+
+const getTeam = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const teamId = req.params.teamId;
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    const collection = db.collection("Teams");
+    const teamDetails = await collection.findOne({
+      _id: ObjectId(teamId),
+    });
+    console.log(
+      "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
+      teamDetails
+    );
+
+    const memberIds = teamDetails.members;
+    // const getWorkSpace = await db.collection("Workspaces").findOne({
+    //   _id: ObjectId(teamDetails.workSpaceId),
+    // });
+
+    const members = [];
+
+    for (const userId of memberIds) {
+      const user = await db.collection("Users").findOne({
+        _id: ObjectId(userId),
+      });
+      members.push(user);
+    }
+
+    const data = {
+      team: teamDetails,
+      members: members,
+    };
+
+    res.status(200).json({ status: 200, message: "success", data: data });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: 500, message: error.message });
+  } finally {
+    client.close();
+    console.log("Disconnected");
+  }
+};
+
+const getTeams = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    const collection = db.collection("Teams");
+    const teams = await collection.find().toArray();
+    console.log(
+      "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
+      teams
+    );
+
+    res.status(200).json({ status: 200, message: "success", data: teams });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: 500, message: error.message });
+  } finally {
+    client.close();
+    console.log("Disconnected");
+  }
 };
 
 const getWorkspace = async (req, res) => {
@@ -266,13 +362,13 @@ const addUser = async (req, res) => {
 // };
 
 const getThread = async (req, res) => {
-  const workSpaceId = req.params.workspace;
+  const threadId = req.params.threadId;
   const client = new MongoClient(MONGO_URI, options);
   try {
     await client.connect();
     console.log("Connected");
     const db = client.db("DevOcean");
-    const result = await db.collection("Threads").findOne({ _id: workSpaceId });
+    const result = await db.collection("Threads").findOne({ _id: threadId });
     console.log(result);
     res.status(200).json({ status: 200, message: "success", data: result });
   } catch (error) {
@@ -330,23 +426,46 @@ const addThread = async (req, res) => {
 // const removeThread = async (req, res) => {};
 
 const getTaskList = async (req, res) => {
-  const workSpaceId = req.params.workspace;
+  const tasklistId = req.params.tasklist;
   const client = new MongoClient(MONGO_URI, options);
   try {
     await client.connect();
     console.log("Connected");
     const db = client.db("DevOcean");
-    const result = await db
-      .collection("TaskLists")
-      .findOne({ _id: workSpaceId });
-    console.log(result);
-    res.status(200).json({ status: 200, message: "success", data: result });
+    const collection = db.collection("TaskLists");
+    const taskList = await collection.findOne({
+      // workSpaceId: "634eef3f77c1adbf720898f4",
+      _id: ObjectId(tasklistId),
+    });
+    console.log(
+      "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
+      taskList
+    );
+
+    const taskIds = taskList.tasks;
+    const getWorkSpace = await db.collection("Workspaces").findOne({
+      _id: ObjectId(taskList.workSpaceId),
+    });
+
+    const tasks = [];
+
+    for (const taskId of taskIds) {
+      const getTask = await db.collection("tasks").findOne({
+        _id: ObjectId(taskId),
+      });
+      tasks.push(getTask);
+    }
+
+    const data = {
+      taskList: taskList,
+      workspace: getWorkSpace,
+      tasks: tasks,
+    };
+
+    res.status(200).json({ status: 200, message: "success", data: data });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: 500, message: error.message });
-  } finally {
-    client.close();
-    console.log("Disconnected");
   }
 };
 
@@ -383,9 +502,11 @@ const addTaskList = async (req, res) => {
       console.log(result);
     }
 
-    res
-      .status(200)
-      .json({ status: 200, message: "Task list added", data: "Task list added" });
+    res.status(200).json({
+      status: 200,
+      message: "Task list added",
+      data: "Task list added",
+    });
   } catch (error) {
     res.status(500).json({ status: 500, message: error.message });
     console.log(error);
@@ -395,8 +516,50 @@ const addTaskList = async (req, res) => {
   }
 };
 
-// const getTask = async (req, res) => {};
-// const getTasks = async (req, res) => {};
+const getTask = async (req, res) => {
+  const task = req.params.taskId;
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    const collection = db.collection("tasks");
+    const taskDetails = await collection.findOne({
+      _id: ObjectId(task),
+    });
+    console.log(
+      "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
+      taskDetails
+    );
+    res
+      .status(200)
+      .json({ status: 200, message: "success", data: taskDetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: 500, message: error.message });
+  }
+};
+
+const getTasks = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    console.log("Connected");
+    const db = client.db("DevOcean");
+    const collection = db.collection("tasks");
+    const tasks = await collection.find().toArray();
+    console.log(
+      "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
+      tasks
+    );
+    res.status(200).json({ status: 200, message: "success", data: tasks });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: 500, message: error.message });
+  }
+};
 
 const addTask = async (req, res) => {
   console.log(req.body);
@@ -534,6 +697,7 @@ const deleteDocument = async (req, res) => {
 };
 
 module.exports = {
+  addTeam,
   getWorkspace,
   getWorkspaces,
   addWorkspace,
@@ -548,7 +712,13 @@ module.exports = {
   getDocument,
   getDocuments,
   addDocument,
+  getTasks,
+  getTask,
   addTask,
   addUserList,
+  getThread,
+  getThreads,
   addThread,
+  getTeam,
+  getTeams
 };

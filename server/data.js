@@ -82,14 +82,32 @@ const workspaces = [
   {
     _id: workspaceId,
     project_name: "English assignment",
-    team_members: ["Amanda", "Bob", "Charlie"],
+    // team_members: ["Amanda", "Bob", "Charlie"],
+    // team: teamId,
     document: [documentId],
   },
   {
     _id: workspaceId,
     project_name: "Geography assignment",
-    team_members: ["Henry", "Isabel", "Jackie"],
+    // team_members: ["Henry", "Isabel", "Jackie"],
     document: [documentId],
+  },
+];
+const teams = [
+  {
+    name: "Alpha",
+    members: [
+      "634f03264ed3b46ca8767fc6",
+      "634f03264ed3b46ca8767fc7",
+      "634f03264ed3b46ca8767fc8",
+    ],
+  },
+  {
+    name: "Bravo",
+    members: [
+      "634f03264ed3b46ca8767fc6",
+      "634f03264ed3b46ca8767fc7",
+    ],
   },
 ];
 const threads = [
@@ -191,4 +209,4 @@ const taskList = [
   },
 ];
 
-module.exports = { workspaces, documents, threads, users, tasks, taskList };
+module.exports = { workspaces, documents, threads, users, tasks, taskList, teams };
