@@ -22,18 +22,17 @@ const options = {
 const addTeam = async (req, res) => {
   const newId = uuidv4();
   const client = new MongoClient(MONGO_URI, options);
+  const { name, members, project } = req.body;
   try {
     await client.connect();
     console.log("Connected");
     const db = client.db("DevOcean");
-    for (const team of teams) {
-      const result = await db.collection("Teams").insertOne({
-        name: team.name,
-        members: team.members,
-      });
-      console.log(result);
-    }
-    console.log(workspaces);
+    const result = await db.collection("Teams").insertOne({
+      name: name,
+      members: members,
+      project: project,
+    });
+    console.log(result);
 
     res.status(200).json({ status: 200, message: "Team added", data: "added" });
   } catch (error) {
@@ -103,8 +102,38 @@ const getTeams = async (req, res) => {
       "🚀 ~ file: handlers.js ~ line 369 ~ getTaskList ~ result",
       teams
     );
+    const workspace = [];
+    const members = [];
 
-    res.status(200).json({ status: 200, message: "success", data: teams });
+    const allTeams = [];
+    for (const team of teams) {
+      const getWorkspace = await db.collection("Workspaces").findOne({
+        _id: ObjectId(team.project),
+      });
+      console.log(
+        "🚀 ~ file: handlers.js ~ line 113 ~ getWorkspace ~ getWorkspace",
+        getWorkspace
+      );
+      const users = team.members;
+      for (const user of users) {
+        const member = await db.collection("Users").findOne({
+          _id: ObjectId(user),
+        });
+        console.log(
+          "🚀 ~ file: handlers.js ~ line 118 ~ member ~ member",
+          member
+        );
+        members.push(member);
+      }
+      const data = {
+        team: team,
+        workspace: getWorkspace,
+        members: members,
+      };
+      allTeams.push(data);
+    }
+
+    res.status(200).json({ status: 200, message: "success", data: allTeams });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: 500, message: error.message });
@@ -153,7 +182,7 @@ const getWorkspaces = async (req, res) => {
 };
 
 const addWorkspace = async (req, res) => {
-  const { documents, team_members, project_name } = req.body;
+  const { documents, team, project_name, status } = req.body;
   console.log(req.body);
   const newId = uuidv4();
   const client = new MongoClient(MONGO_URI, options);
@@ -164,8 +193,9 @@ const addWorkspace = async (req, res) => {
     // for (const workspace of workspaces) {
     const result = await db.collection("Workspaces").insertOne({
       project_name,
-      team_members,
       documents,
+      team,
+      status,
     });
     console.log(result);
     // }
@@ -518,8 +548,33 @@ const getTaskLists = async (req, res) => {
     console.log("Connected");
     const db = client.db("DevOcean");
     const result = await db.collection("TaskLists").find().toArray();
+    const taskLists = [];
+    const taskss = [];
+    for (const tasklist of result) {
+      const getWorkSpace = await db.collection("Workspaces").findOne({
+        _id: ObjectId(tasklist.workSpaceId),
+      });
+      const tasks = tasklist.tasks;
+      for (const task of tasks) {
+        const taskDetail = await db.collection("tasks").findOne({
+          _id: ObjectId(task),
+        });
+        console.log(
+          "🚀 ~ file: handlers.js ~ line 118 ~ member ~ member",
+          taskDetail
+        );
+        taskss.push(taskDetail);
+      }
+      const data = {
+        taskList: tasklist,
+        workspace: getWorkSpace,
+        tasks: taskss,
+      };
+      taskLists.push(data);
+    }
+
     console.log(result);
-    res.status(200).json({ status: 200, message: "success", data: result });
+    res.status(200).json({ status: 200, message: "success", data: taskLists });
   } catch (error) {
     console.log(error);
   } finally {
