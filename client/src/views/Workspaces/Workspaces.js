@@ -11,12 +11,6 @@ const Workspaces = () => {
         console.log(data);
         setWorkspaces(data.data);
       });
-
-    // axios.get('https://localhost:8000/workspaces')
-    // 	.then(response => {
-    // 		console.log("🚀 ~ file: Workspaces.js ~ line 17 ~ useEffect ~ response", response)
-    // 		return setWorkspaces(response.data.total)
-    // 	})
   }, []);
   console.log(workspaces);
 

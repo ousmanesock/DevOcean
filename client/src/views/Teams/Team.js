@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Box, Grid, Typography } from "@mui/material";
-import MembersList from "./List";
+import React from "react";
+import { Box, Grid } from "@mui/material";
+import MembersList from "./MembersList";
 
 export default function Team({ item }) {
   const { members, team, workspace } = item;
@@ -8,8 +8,6 @@ export default function Team({ item }) {
   return (
     <Box sx={{ padding: "16px" }}>
       <Grid container spacing={2}>
-        {/* {statistics &&
-					statistics.map((item) => ( */}
         <Grid item xs={12} sm={6} md={4} lg={4}>
           <Grid
             container
@@ -22,25 +20,22 @@ export default function Team({ item }) {
             }}
           >
             <Grid item sx={{ display: "flex" }}>
-              <Grid item height={50} width={50}>
-                {/* <Image src={item.image} /> */}
-              </Grid>
               <Grid
                 container
-                sx={{ display: "grid", alignItems: "end", marginLeft: "10px" }}
+                sx={{ display: "grid", alignItems: "end", marginLeft: "0px" }}
               >
                 <Box
                   sx={{
                     fontStyle: "normal",
-                    fontWeight: 500,
+                    fontWeight: 700,
                     fontFamily: "Mulish",
-                    fontSize: "14px",
+                    fontSize: "24px",
                     lineHeight: "134.4%",
                     color: "#000000",
                     opacity: "0.3",
                   }}
                 >
-                  {team.name}
+                  {"Team: "} {team.name}
                 </Box>
                 <Box
                   sx={{
@@ -52,71 +47,14 @@ export default function Team({ item }) {
                     color: "#000000",
                   }}
                 >
+                  {"Project: "}
                   {workspace.project_name}
                 </Box>
-              </Grid>
-            </Grid>
-            <Grid item sx={{ display: "flex" }}>
-              <Grid item sx={{ marginTop: "10px", display: "flex" }}>
-                <Typography
-                  sx={{
-                    fontStyle: "normal",
-                    fontWeight: 500,
-                    fontFamily: "Mulish",
-                    fontSize: "16px",
-                    lineHeight: "134.4%",
-                    color: "#666666",
-                  }}
-                >
-                  {/* {item.status1type}:{" "} */}
-                  <span
-                    style={{
-                      fontStyle: "normal",
-                      fontWeight: 700,
-                      fontFamily: "Mulish",
-                      fontSize: "16px",
-                      lineHeight: "134.4%",
-                      color: "#000000",
-                    }}
-                  >
-                    {/* {item.status1} */}
-                  </span>
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                sx={{ marginTop: "10px", marginLeft: "10px", display: "flex" }}
-              >
-                <Typography
-                  sx={{
-                    fontStyle: "normal",
-                    fontWeight: 500,
-                    fontFamily: "Mulish",
-                    fontSize: "16px",
-                    lineHeight: "134.4%",
-                    color: "#666666",
-                  }}
-                >
-                  {/* {item.status2type}:{" "} */}
-                  <span
-                    style={{
-                      fontStyle: "normal",
-                      fontWeight: 700,
-                      fontFamily: "Mulish",
-                      fontSize: "16px",
-                      lineHeight: "134.4%",
-                      color: "#000000",
-                    }}
-                  >
-                    {/* {item.status2} */}
-                  </span>
-                </Typography>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
         <MembersList item={members} />
-        {/* ))} */}
       </Grid>
     </Box>
   );

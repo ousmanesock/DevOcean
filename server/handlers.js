@@ -170,9 +170,39 @@ const getWorkspaces = async (req, res) => {
     await client.connect();
     console.log("Connected");
     const db = client.db("DevOcean");
-    const result = await db.collection("Workspaces").find().toArray();
-    console.log(result);
-    res.status(200).json({ status: 200, message: "success", data: result });
+    const workspaces = await db.collection("Workspaces").find().toArray();
+    const allWorkspaces = [];
+    const documents = [];
+    for (const workspace of workspaces) {
+      const getTeam = await db.collection("Teams").findOne({
+        _id: ObjectId(workspace.team),
+      });
+      console.log(
+        "🚀 ~ file: handlers.js ~ line 113 ~ getWorkspace ~ getWorkspace",
+        getTeam
+      );
+      const documents = workspace.documents;
+      for (const documentId of documents) {
+        const document = await db.collection("Documents").findOne({
+          _id: ObjectId(documentId),
+        });
+        console.log(
+          "🚀 ~ file: handlers.js ~ line 118 ~ member ~ member",
+          document
+        );
+        documents.push(document);
+      }
+      const data = {
+        workspace: workspace,
+        team: getTeam,
+        documents: documents,
+      };
+      allWorkspaces.push(data);
+    }
+    console.log(workspaces);
+    res
+      .status(200)
+      .json({ status: 200, message: "success", data: allWorkspaces });
   } catch (error) {
     console.log(error);
   } finally {
